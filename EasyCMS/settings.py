@@ -118,3 +118,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+# DEBUG打印sql语句
+LOGGING = {
+	'version'                 : 1,
+	'disable_existing_loggers': False,
+	'handlers'                : {
+		'console': {
+			'class': 'logging.StreamHandler',
+		},
+	},
+	'loggers'                 : {
+		'django.db.backends': {
+			'handlers': ['console'],
+			'level'   : 'DEBUG' if DEBUG else 'INFO',
+		},
+	},
+}
