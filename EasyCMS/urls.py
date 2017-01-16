@@ -24,8 +24,8 @@ urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^ueditor/$', include(DjangoUeditor_url)),
 	url(r'^$', cmscore_views.index, name='index'),
-	url(r'^column/(?P<column_slug>[^/]+)/?$', cmscore_views.column, name='column'),
-	url(r'^article/(?P<article_slug>[^/]+)/?$', cmscore_views.article, name='article')
+	url(r'^column/(?P<column_slug>[^/]+)/$', cmscore_views.column, name='column'),
+	url(r'^article/(?P<pk>[^/]+)/(?P<article_slug>[^/]+)/$', cmscore_views.article, name='article')
 ]
 if settings.DEBUG:
 	urlpatterns += static(

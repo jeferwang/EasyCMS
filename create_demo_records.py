@@ -1,3 +1,4 @@
+# coding=utf-8
 from EasyCMS.wsgi import *
 from CMScore.models import Column, Article
 
@@ -7,6 +8,7 @@ def main():
 		('体育新闻', 'sport'),
 		('社会新闻', 'society'),
 		('科技新闻', 'science'),
+		('国外新闻', 'foreign'),
 	]
 	j = 0
 	for column_name, url in columns_urls:
@@ -18,8 +20,6 @@ def main():
 					slug='article_{}_{}'.format(j, i),
 					content='新闻详细内容:{}_{}'.format(column_name, i)
 			)[0]
-			print(c)
-			print(article)
 			article.column.add(c)
 
 

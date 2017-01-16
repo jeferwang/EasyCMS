@@ -4,6 +4,9 @@
 	{{ column.name }}
 {% endblock %}
 {% block content %}
-	<p>这里是{{ column.name }}</p>
-	<p>下面是本栏目包含的文章列表</p>
+	<h2>{{ column.name }}</h2>
+	<ul class="list-group col-md-8">
+		{% for article in column.article_set.all %}
+			<li class="list-group-item"><a href="{% url 'article' article.id article.slug %}">{{ article.title }}</a></li>
+		{% endfor %}
 {% endblock %}

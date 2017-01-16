@@ -1,29 +1,34 @@
 # coding=utf-8
 import time
+
 from django.db import models
 from django.core.urlresolvers import reverse
-
+from django.utils import timezone
 from DjangoUeditor.models import UEditorField
+from django.utils.encoding import python_2_unicode_compatible
 
 
-# Create your models here.
+@python_2_unicode_compatible
 class Column(models.Model):
+	sort = models.IntegerField('排序', default=100)
 	name = models.CharField('栏目名称', max_length=20)
 	slug = models.CharField('栏目网址', max_length=255)
-	intro = models.TextField('栏目简介', default='')
+	intro = models.TextField('栏目简介', default='',blank=True)
+	nav_display = models.BooleanField('导航栏显示', default=False)
+	home_display = models.BooleanField('主页显示', default=False)
 	
 	def __str__(self):
 		return self.name
 	
-	def get_abs_url(self):
+	def get_absolute_url(self):
 		return reverse('column', args=(self.slug,))
 	
 	class Meta:
 		verbose_name = '栏目'  # 对象名称(单数情况
 		verbose_name_plural = '栏目'  # 对象名称(复数情况)
-		ordering = ['name']  # 排序依据
+		ordering = ['sort']  # 排序依据
 
-
+@python_2_unicode_compatible
 class Article(models.Model):
 	column = models.ManyToManyField(Column, verbose_name='所属栏目')  # 文章所属于哪个栏目,多对多的关系
 	title = models.CharField('文章标题', max_length=255)
@@ -40,16 +45,13 @@ class Article(models.Model):
 			blank=True
 	)
 	published = models.BooleanField('正式发布', default=True)
-	# 计算当前时间作为默认发布时间
-	now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-	pub_date = models.DateTimeField('发布时间', default=now_time)
-	# 计算当前时间作为默认更新时间
-	update_time = models.DateTimeField('更新时间', default=now_time)
+	pub_date = models.DateTimeField('发布时间', default=timezone.now)
+	update_time = models.DateTimeField('更新时间', default=timezone.now)
 	
 	def __str__(self):
 		return self.title
 	
-	def get_abs_url(self):
+	def get_absolute_url(self):
 		return reverse('article', args=(self.slug,))
 	
 	class Meta:

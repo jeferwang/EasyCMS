@@ -1,8 +1,140 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block title %}{{ sitename }}{% endblock %}
+{% block head_css_js %}
+	<link type="text/css" rel="stylesheet" href="{% static 'Slicebox/css/slicebox.css' %}"/>
+	<style>
+		#slicebox {
+			position: relative;
+			padding: 0;
+			margin: 0;
+		}
+
+		#nav-arrows {
+			position: absolute;
+			top: 50%;
+			width: 100%;
+		}
+
+		#nav-arrows div {
+			background: gray;
+			width: 50px;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			color: white;
+			font-size: 25px;
+			font-weight: 800;
+			opacity: 0.3;
+			cursor: pointer;
+		}
+
+		#left_arrow {
+			float: left;
+		}
+
+		#right_arrow {
+			float: right;
+		}
+	</style>
+{% endblock %}
 {% block content %}
-	<p>轮播图</p>
-	<p>板块最新文章</p>
-	<p>其他信息</p>
+	<div class="row" id="row1">
+		{#	轮播图开始#}
+		<div id="slicebox" class="slicebox col-md-8">
+
+			<ul id="sb-slider" class="sb-slider">
+				<li>
+					<a href="http://www.flickr.com/photos/strupler/2969141180" target="_blank"><img src="{% static 'Slicebox/images/1.jpg' %}" alt="image1"/></a>
+					<div class="sb-description">
+						<h3>Creative Lifesaver</h3>
+					</div>
+				</li>
+				<li>
+					<a href="http://www.flickr.com/photos/strupler/2968268187" target="_blank"><img src="{% static 'Slicebox/images/2.jpg' %}" alt="image2"/></a>
+					<div class="sb-description">
+						<h3>Honest Entertainer</h3>
+					</div>
+				</li>
+				<li>
+					<a href="http://www.flickr.com/photos/strupler/2968114825" target="_blank"><img src="{% static 'Slicebox/images/3.jpg' %}" alt="image1"/></a>
+					<div class="sb-description">
+						<h3>Brave Astronaut</h3>
+					</div>
+				</li>
+			</ul>
+
+			<div id="shadow" class="shadow"></div>
+
+			<div id="nav-arrows" class="nav-arrows">
+				<div class="img-circle" id="left_arrow" onclick="$slicebox.previous();">&lt;</div>
+				<div class="img-circle" id="right_arrow" onclick="$slicebox.next();">&gt;</div>
+			</div>
+		</div>
+		{#	轮播图结束#}
+		{#		右侧信息开始#}
+		<div class="col-md-4 col-push-8">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					{{ cols_index.0.name }}
+				</div>
+				<ul class="list-group">
+					{% for article in cols_index.0.article_set.all %}
+						{% if forloop.counter <= 10 %}
+							<li class="list-group-item"><a href="{% url 'article' article.id article.slug %}">{{ article.title }}</a></li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		{#		右侧信息结束#}
+	</div>
+	<div class="row">
+		{% for col in cols_index %}
+			{% if not forloop.first %}
+				<div class="col-md-4">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							{{ col.name }}
+						</div>
+						<ul class="list-group">
+							{% for article in col.article_set.all %}
+								{% if forloop.counter <= 5 %}
+									<li class="list-group-item"><a href="{% url 'article' article.id article.slug %}">{{ article.title }}</a></li>
+								{% endif %}
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
+
+	</div>
+{% endblock %}
+{% block foot_css_js %}
+		<script type="text/javascript" src="{% static 'Slicebox/js/modernizr.js' %}"></script>
+		<script type="text/javascript" src="{% static 'Slicebox/js/jquery.slicebox.js' %}"></script>
+		<script type="text/javascript">
+			var $slicebox;
+			$(function () {
+				$slicebox = $('#sb-slider').slicebox({
+					interval: 3000,
+					orientation: "r", //表示幻灯片的切换方向，可取 (v)垂直方向, (h)水平方向 or (r)随机方向
+					perspective: 800, //透视点距离，可以通过改变其值查看效果
+					cuboidsCount: 5, //幻灯片横向或纵向被切割的块数，切割的每一块将会以3D的形式切换
+					cuboidsRandom: true, //是否随机 cuboidsCount 参数的值
+					maxCuboidsCount: 5, //设置一个值用来规定最大的 cuboidsCount 值
+					colorHiddenSides: "#333", //隐藏的幻灯片的颜色
+					sequentialFactor: 150, //幻灯片切换时间（毫秒数）
+					speed: 600, //每一块3D立方体的速度
+					autoplay: true, //是否自动开始切换
+					onBeforeChange: function (position) {
+						return false;
+					},
+					onAfterChange: function (position) {
+						return false;
+					}
+				});
+			});
+		</script>
 {% endblock %}

@@ -3,11 +3,11 @@ from .models import Column, Article
 
 
 class ColumnAdmin(admin.ModelAdmin):
-	list_display = ('name', 'slug', 'intro')
+	list_display = ('sort','name', 'slug', 'intro', 'home_display', 'nav_display')
 
 
 class ArticleAdmin(admin.ModelAdmin):
-	list_display = ('title', 'slug', 'author', 'pub_date', 'update_time')
+	list_display = ('title', 'slug', 'author', 'published', 'pub_date', 'update_time')
 
 
 admin.site.register(Column, ColumnAdmin)

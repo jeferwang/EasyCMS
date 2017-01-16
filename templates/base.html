@@ -5,7 +5,18 @@
 	<meta charset="UTF-8">
 	<title>{% block title %}{{ sitename }}{% endblock %}</title>
 	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-	{% block css_js %}{% endblock %}
+	<style>
+		body {
+			overflow: auto;
+			overflow-x: hidden;
+		}
+
+		#footer p {
+			font-size: 14px;
+			color: rgba(50, 50, 50, 0.7);
+		}
+	</style>
+	{% block head_css_js %}{% endblock %}
 </head>
 <body>
 <header>
@@ -15,8 +26,10 @@
 				<a href="{% url 'index' %}" class="navbar-brand">{{ sitename }}</a>
 			</div>
 			<ul class="nav navbar-nav">
-				{% for column in columns %}
-					<li><a href="{% url 'column' column.slug %}">{{ column.name }}</a></li>
+				{% for col in columns %}
+					{% if col.nav_display %}
+						<li {% if column.name == col.name %}class="active"{% endif %}><a href="{% url 'column' col.slug %}">{{ col.name }}</a></li>
+					{% endif %}
 				{% endfor %}
 			</ul>
 		</div>
@@ -27,10 +40,14 @@
 		<h1 align="center">{{ sitename }}</h1>
 	{% endblock %}
 </div>
-<footer>
-	<p align="center">footer</p>
+<footer class="row" id="footer">
+	<div class="jumbotron" align="center" style="margin-bottom: 0">
+		<p>{{ footerinfo }}</p>
+		<p>&copy; Powered By EasyCMS</p>
+	</div>
 </footer>
 </body>
 <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+{% block foot_css_js %}{% endblock %}
 </html>
