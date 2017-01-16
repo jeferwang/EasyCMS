@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+	{{ article.title }}
+{% endblock %}
+{% block content %}
+	<p>这里是文章页面</p>
+	<p>文章标题是{{ article.title }}</p>
+	<p>文章内容是{{ article.content }}</p>
+{% endblock %}

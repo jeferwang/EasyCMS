@@ -1,3 +1,4 @@
+# coding=utf-8
 """
 Django settings for EasyCMS project.
 
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'CMScore',
+	'DjangoUeditor',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +64,9 @@ TEMPLATES = [
 				'django.template.context_processors.request',
 				'django.contrib.auth.context_processors.auth',
 				'django.contrib.messages.context_processors.messages',
+				'EasyCMS.context_processor.sitename',
+				'EasyCMS.context_processor.columns',
+				'EasyCMS.context_processor.settings',
 			],
 		},
 	},
@@ -134,3 +139,14 @@ LOGGING = {
 		},
 	},
 }
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# 公共的 static 文件，比如 jquery.js 可以放这里，这里面的文件夹不能包含 STATIC_ROOT
+STATICFILES_DIRS = (
+	os.path.join(BASE_DIR, "common_static"),
+)
+
+# upload folder
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

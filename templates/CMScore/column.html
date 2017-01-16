@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+	{{ column.name }}
+{% endblock %}
+{% block content %}
+	<p>这里是{{ column.name }}</p>
+	<p>下面是本栏目包含的文章列表</p>
+{% endblock %}
